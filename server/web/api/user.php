@@ -1,9 +1,6 @@
 <?php
     include 'dbconfig.php';
     
-    //proses koneksi
-    $koneksi = mysqli_connect($host, $user, $pass, $db);
-    
     //parameter
     $op = $_GET['op'];
     switch ($op) {
@@ -17,9 +14,9 @@
     function getall()
     {
         global $koneksi;
-        $query = "SELECT * FROM user";
-        $q1 = mysqli_query($koneksi, $query);
-        while ($result = mysqli_fetch_array($q1)) {
+        $query = "SELECT * FROM user_app";
+        $q1 = pg_query($koneksi, $query);
+        while ($result = pg_fetch_row($q1, NULL, PGSQL_ASSOC)) {
             $hasil[] = array(
                 'id_user' => $result['id_user'],
                 'nama' => $result['nama'],
@@ -43,8 +40,8 @@
         $role = $_POST['role'];
         $hasil = "Gagal memasukkan data";
         if ($id_user and $nama and $email and $username and $password and $role) {
-            $query = "INSERT INTO user VALUES ($id_user,'$nama','$email','$username', '$password', '$role')";
-            $q1 = mysqli_query($koneksi, $query);
+            $query = "INSERT INTO user_app VALUES ($id_user,'$nama','$email','$username', '$password', '$role')";
+            $q1 = pg_query($koneksi, $query);
             if ($q1) {
                 $hasil = "Berhasil menambahkan data";
             }
@@ -57,9 +54,9 @@
     {
         global $koneksi;
         $id_user = $_GET['id_user'];
-        $query = "SELECT * FROM user WHERE id_user = $id_user";
-        $q1 = mysqli_query($koneksi, $query);
-        while ($result = mysqli_fetch_array($q1)) {
+        $query = "SELECT * FROM user_app WHERE id_user = $id_user";
+        $q1 = pg_query($koneksi, $query);
+        while ($result = pg_fetch_row($q1, NULL, PGSQL_ASSOC)) {
             $hasil[] = array(
                 'id_user' => $result['id_user'],
                 'nama' => $result['nama'],
@@ -101,7 +98,7 @@
         if ($nama or $email or $username or $password or $role) {
             $query = "UPDATE user SET " . implode(",",
             $set) . " WHERE id_user = $id_user";
-            $q1 = mysqli_query($koneksi, $query);
+            $q1 = pg_query($koneksi, $query);
             if ($q1) {
                 $hasil = "Data berhasil diupdate";
             }
@@ -114,8 +111,8 @@ function delete()
 {
     global $koneksi;
     $id_user = $_GET['id_user'];
-    $query = "DELETE FROM user WHERE id_user = $id_user";
-    $q1 = mysqli_query($koneksi, $query);
+    $query = "DELETE FROM user_app WHERE id_user = $id_user";
+    $q1 = pg_query($koneksi, $query);
     if ($q1) {
         $hasil = "Berhasil menghapus data";
     } else {

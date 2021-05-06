@@ -1,9 +1,6 @@
 <?php
     include 'dbconfig.php';
     
-    //proses koneksi
-    $koneksi = mysqli_connect($host, $user, $pass, $db);
-    
     //parameter
     $op = $_GET['op'];
     switch ($op) {
@@ -19,8 +16,8 @@
         global $koneksi;
         $id_pasien = $_GET['id_pasien'];
         $query = "SELECT * FROM rekam_medis WHERE id_pasien = $id_pasien";
-        $q1 = mysqli_query($koneksi, $query);
-        while ($result = mysqli_fetch_array($q1)) {
+        $q1 = pg_query($koneksi, $query);
+        while ($result = pg_fetch_row($q1, NULL, PGSQL_ASSOC)) {
             $hasil[] = array(
                 'id_rekmed' => $result['id_rekmed'],
                 'no_bag_rekmed' => $result['no_bag_rekmed'],
@@ -59,7 +56,7 @@
         $hasil = "Gagal dimasukkan data";
         if ($id_rekmed and $no_bag_rekmed and $tensi and $nadi and $nafas and $suhu and $berat_badan and $tinggi_badan and $bmi and $diagnosis and $tindakan and $id_pasien and $id_obat) {
             $query = "INSERT INTO rekam_medis VALUES ($id_rekmed, '$no_bag_rekmed', '$tensi', '$nadi', '$nafas', '$suhu', $berat_badan, $tinggi_badan, $bmi, '$diagnosis', '$tindakan', $id_pasien, $id_obat)";
-            $q1 = mysqli_query($koneksi, $query);
+            $q1 = pg_query($koneksi, $query);
             if ($q1) {
                 $hasil = "Berhasil menambahkan data";
             }
@@ -73,8 +70,8 @@
         global $koneksi;
         $id_rekmed = $_GET['id_rekmed'];
         $query = "SELECT * FROM rekam_medis WHERE id_rekmed = $id_rekmed";
-        $q1 = mysqli_query($koneksi, $query);
-        while ($result = mysqli_fetch_array($q1)) {
+        $q1 = pg_query($koneksi, $query);
+        while ($result = pg_fetch_row($q1, NULL, PGSQL_ASSOC)) {
             $hasil[] = array(
                 'id_rekmed' => $result['id_rekmed'],
                 'no_bag_rekmed' => $result['no_bag_rekmed'],
@@ -149,7 +146,7 @@
         if ($no_bag_rekmed or $tensi or $nadi or $nafas or $suhu or $berat_badan or $tinggi_badan or $bmi or $diagnosis or $tindakan or $id_obat) {
             $query = "UPDATE rekam_medis SET " . implode(",",
             $set) . " WHERE id_rekmed = $id_rekmed";
-            $q1 = mysqli_query($koneksi, $query);
+            $q1 = pg_query($koneksi, $query);
             if ($q1) {
                 $hasil = "Data berhasil diupdate";
             }
@@ -163,7 +160,7 @@ function delete()
     global $koneksi;
     $id_pasien = $_GET['id_rekmed'];
     $query = "DELETE FROM rekam_medis WHERE id_rekmed = $id_pasien";
-    $q1 = mysqli_query($koneksi, $query);
+    $q1 = pg_query($koneksi, $query);
     if ($q1) {
         $hasil = "Berhasil menghapus data";
     } else {

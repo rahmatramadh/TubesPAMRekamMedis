@@ -1,9 +1,6 @@
 <?php
     include 'dbconfig.php';
-    
-    //proses koneksi
-    $koneksi = mysqli_connect($host, $user, $pass, $db);
-    
+
     //parameter
     $op = $_GET['op'];
     switch ($op) {
@@ -18,8 +15,8 @@
     {
         global $koneksi;
         $query = "SELECT * FROM pasien";
-        $q1 = mysqli_query($koneksi, $query);
-        while ($result = mysqli_fetch_array($q1)) {
+        $q1 = pg_query($koneksi, $query);
+        while ($result = pg_fetch_row($q1, NULL, PGSQL_ASSOC)) {
             $hasil[] = array(
                 'id_pasien' => $result['id_pasien'],
                 'nama' => $result['nama'],
@@ -44,7 +41,7 @@
         $hasil = "Gagal dimasukkan data";
         if ($id_pasien and $nama and $usia and $kelamin and $alamat and $no_telp) {
             $query = "INSERT INTO obat (id_pasien, nama, usia, kelamin, alamat, no_telp) VALUES ($id_pasien,'$nama',$usia,'$kelamin', '$alamat', '$no_telp')";
-            $q1 = mysqli_query($koneksi, $query);
+            $q1 = pg_query($koneksi, $query);
             if ($q1) {
                 $hasil = "Berhasil menambahkan data";
             }
@@ -58,8 +55,8 @@
         global $koneksi;
         $id_pasien = $_GET['id_pasien'];
         $query = "SELECT * FROM pasien WHERE id_pasien = $id_pasien";
-        $q1 = mysqli_query($koneksi, $query);
-        while ($result = mysqli_fetch_array($q1)) {
+        $q1 = pg_query($koneksi, $query);
+        while ($result = pg_fetch_row($q1, NULL, PGSQL_ASSOC)) {
             $hasil[] = array(
                 'id_pasien' => $result['id_pasien'],
                 'nama' => $result['nama'],
@@ -101,7 +98,7 @@
         if ($nama or $usia or $kelamin or $alamat or $no_telp) {
             $query = "UPDATE pasien SET " . implode(",",
             $set) . " WHERE id_pasien = $id_pasien";
-            $q1 = mysqli_query($koneksi, $query);
+            $q1 = pg_query($koneksi, $query);
             if ($q1) {
                 $hasil = "Data berhasil diupdate";
             }
@@ -115,7 +112,7 @@ function delete()
     global $koneksi;
     $id_pasien = $_GET['id_pasien'];
     $query = "DELETE FROM pasien WHERE id_pasien = $id_pasien";
-    $q1 = mysqli_query($koneksi, $query);
+    $q1 = pg_query($koneksi, $query);
     if ($q1) {
         $hasil = "Berhasil menghapus data";
     } else {

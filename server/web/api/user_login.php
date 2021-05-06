@@ -1,13 +1,12 @@
 <?php
     include "dbconfig.php";
-    $koneksi = mysqli_connect($host, $user, $pass, $db);
 
     $username = $_GET['username'];
     $password = $_GET['password'];
 
     $query = "SELECT * FROM user WHERE username='$username' AND password='$password'";
 
-    $check = mysqli_fetch_array(mysqli_query($koneksi, $query));
+    $check = pg_fetch_row(pg_query($koneksi, $query));
 
     if(isset($check)){
         $SuccessLoginMsg = 'Data Matched';
@@ -30,5 +29,5 @@
        // Echo the message.
         echo $InvalidMSGJSon;   
     }    
-    mysqli_close($con);
+    pg_close($con);
 ?>
