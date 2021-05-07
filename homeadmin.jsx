@@ -2,7 +2,7 @@ import React,{useState} from "react";
 import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Image, StatusBar, ToastAndroid } from "react-native";
 import header from "assets/home/header.jpg"
 import logout from "assets/home/logout.jpg"
-import search from "assets/home/search.jpg"
+import searchjpg from "assets/home/search.jpg"
 
 
 
@@ -15,12 +15,12 @@ const Home  = (props) => {
             source = {{header}}>
             </Image>
             <Image style={styles.logout}
-            source = {{plus}}>
+            source = {{logout}}>
             </Image>
             <Text style={styles.textheader}>ADMIN</Text>
             <Text style={styles.daftar}>Daftar Pasien</Text>
             <Image style={styles.logout}
-            source = {{plus}}>
+            source = {{searchjpg}}>
             </Image>
             <View style={styles.textInputWrapper}>
                 <TextInput style={styles.textInput} onChangeText={(search) => setSearch( search )} value={search} placeholder="Cari pasien" placeholderTextColor="grey" />
